@@ -67,10 +67,13 @@ const OfflineData = ({ activeKey, loading, offlineData, offlineChartData, handle
               data={offlineChartData}
               titleMap={{
                 y1: formatMessage({
-                  id: 'dashboardandanalysis.analysis.traffic',
+                  id: 'dashboardandrate.rate.workflowproducer',
                 }),
                 y2: formatMessage({
-                  id: 'dashboardandanalysis.analysis.payments',
+                  id: 'dashboardandrate.rate.workflowconsumer',
+                }),
+                y3: formatMessage({
+                  id: 'dashboardandrate.rate.worksheetproducer',
                 }),
               }}
             />

@@ -5,15 +5,17 @@ import {GridContent} from '@ant-design/pro-layout';
 import {connect} from 'umi';
 import styles from './style.less';
 
-const TopSearch = React.lazy(() => import('./components/TopSearch'));
+const CompanyListData = React.lazy(() => import('./components/CompanyListData'));
+const HostListData = React.lazy(() => import('./components/HostListData'));
 const OfflineData = React.lazy(() => import('./components/OfflineData'));
 
 
 class Rate extends Component {
   state = {
-    currentTabKey: '',
+    companyTabKey: '',
     hostTabKey: '',
     rateKey: false,
+    selectType: 'host',
   };
 
   reqRef = 0;
@@ -37,9 +39,20 @@ class Rate extends Component {
   }
 
   handleTabChange = (key) => {
-    this.setState({
-      currentTabKey: key,
-    });
+
+    console.log(key);
+
+    const {selectType} = this.state;
+
+    if (selectType === 'host') {
+      this.setState({
+        companyTabKey: key,
+      });
+    } else {
+      this.setState({
+        hostTabKey: key,
+      });
+    }
   };
 
   setRateKey = (key) => {
@@ -49,33 +62,43 @@ class Rate extends Component {
     });
   };
 
-  selectHostTabKey = (row) => {
+  selectCompanyTabKey = (row) => {
 
-    console.log(row);
     this.setState({
       rateKey: true,
-      hostTabKey: row.host
+      companyTabKey: row.id,
+      selectType: 'company'
+    });
+  };
+
+  selectHostTabKey = (row) => {
+
+    this.setState({
+      rateKey: true,
+      hostTabKey: row.id,
+      selectType: 'host',
     });
   };
 
   render() {
-    const { currentTabKey, rateKey, hostTabKey} = this.state;
+    const {companyTabKey, rateKey, hostTabKey, selectType} = this.state;
     const {dashboardRate, loading} = this.props;
     const {
       hostData,
       visitData2,
       searchData,
+      searchData2,
       offlineData,
       offlineChartData,
     } = dashboardRate;
 
     const hostKey = hostTabKey || hostData[0] && hostData[0].id;
 
-    const offlineDataList = offlineData[hostKey] || [];
+    const offlineDataList = (selectType === 'host') ? (offlineData[hostKey] || []) : hostData;
 
-    const activeKey = currentTabKey || (offlineDataList[0] && offlineDataList[0].id);
+    const activeKey = (selectType === 'host') ? (companyTabKey || (offlineDataList[0] && offlineDataList[0].id)) : (hostTabKey || hostData[0] && hostData[0].id);
 
-    const activeOfflineChartData = offlineChartData[hostKey + activeKey];
+    const activeOfflineChartData = (selectType === 'host') ? offlineChartData[hostKey + activeKey] : offlineChartData[hostKey + companyTabKey];
 
     const menu = (
       <Menu>
@@ -94,24 +117,32 @@ class Rate extends Component {
     return (
       <GridContent>
         <React.Fragment>
-          <Suspense fallback={null}>
-            <TopSearch
-              loading={loading}
-              visitData2={visitData2}
-              searchData={searchData}
-              dropdownGroup={dropdownGroup}
-              selectHostTabKey={this.selectHostTabKey}
-            />
-          </Suspense>
-          {/*<Suspense fallback={null}>*/}
-          {/*  <OfflineData*/}
-          {/*    activeKey={activeKey}*/}
-          {/*    loading={loading}*/}
-          {/*    offlineData={offlineDataList}*/}
-          {/*    offlineChartData={activeOfflineChartData}*/}
-          {/*    handleTabChange={this.handleTabChange}*/}
-          {/*  />*/}
-          {/*</Suspense>*/}
+          <Row
+            gutter={24}
+          >
+            <Col xl={12} lg={24} md={24} sm={24} xs={24}>
+              <Suspense fallback={null}>
+                <HostListData
+                  loading={loading}
+                  visitData2={visitData2}
+                  searchData={searchData}
+                  dropdownGroup={dropdownGroup}
+                  selectHostTabKey={this.selectHostTabKey}
+                />
+              </Suspense>
+            </Col>
+            <Col xl={12} lg={24} md={24} sm={24} xs={24}>
+              <Suspense fallback={null}>
+                <CompanyListData
+                  loading={loading}
+                  visitData2={visitData2}
+                  searchData={searchData2}
+                  dropdownGroup={dropdownGroup}
+                  selectHostTabKey={this.selectCompanyTabKey}
+                />
+              </Suspense>
+            </Col>
+          </Row>
         </React.Fragment>
 
         <Drawer
@@ -121,7 +152,7 @@ class Rate extends Component {
             this.setRateKey(false);
           }}
           closable={true}
-          transitions = {false}
+          transitions={false}
           placement={'bottom'}
         >
           {rateKey && (

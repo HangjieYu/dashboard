@@ -1,4 +1,4 @@
-import { Axis, Chart, Geom, Legend, Tooltip } from 'bizcharts';
+import {Axis, Chart, Geom, Legend, Tooltip} from 'bizcharts';
 import DataSet from '@antv/data-set';
 import React from 'react';
 import Slider from 'bizcharts-plugin-slider';
@@ -13,6 +13,7 @@ const TimelineChart = (props) => {
     titleMap = {
       y1: 'y1',
       y2: 'y2',
+      y3: 'y3',
     },
     borderWidth = 2,
     data: sourceData,
@@ -20,19 +21,21 @@ const TimelineChart = (props) => {
   const data = Array.isArray(sourceData)
     ? sourceData
     : [
-        {
-          x: 0,
-          y1: 0,
-          y2: 0,
-        },
-      ];
+      {
+        x: 0,
+        y1: 0,
+        y2: 0,
+        y3: 0,
+      },
+    ];
   data.sort((a, b) => a.x - b.x);
   let max;
 
-  if (data[0] && data[0].y1 && data[0].y2) {
+  if (data[0] && data[0].y1 && data[0].y2 && data[0].y3) {
     max = Math.max(
       [...data].sort((a, b) => b.y1 - a.y1)[0].y1,
       [...data].sort((a, b) => b.y2 - a.y2)[0].y2,
+      [...data].sort((a, b) => b.y3 - a.y3)[0].y3,
     );
   }
 
@@ -55,15 +58,16 @@ const TimelineChart = (props) => {
       type: 'map',
 
       callback(row) {
-        const newRow = { ...row };
+        const newRow = {...row};
         newRow[titleMap.y1] = row.y1;
         newRow[titleMap.y2] = row.y2;
+        newRow[titleMap.y3] = row.y3;
         return newRow;
       },
     })
     .transform({
       type: 'fold',
-      fields: [titleMap.y1, titleMap.y2],
+      fields: [titleMap.y1, titleMap.y2, titleMap.y3],
       // 展开字段集
       key: 'key',
       // key字段
@@ -99,7 +103,7 @@ const TimelineChart = (props) => {
       backgroundChart={{
         type: 'line',
       }}
-      onChange={({ startValue, endValue }) => {
+      onChange={({startValue, endValue}) => {
         ds.setState('start', startValue);
         ds.setState('end', endValue);
       }}
@@ -116,17 +120,17 @@ const TimelineChart = (props) => {
       <div>
         {title && <h4>{title}</h4>}
         <Chart height={height} padding={padding} data={dv} scale={cols} forceFit>
-          <Axis name="x" />
-          <Tooltip />
-          <Legend name="key" position="top" />
-          <Geom type="line" position="x*value" size={borderWidth} color="key" />
+          <Axis name="x"/>
+          <Tooltip/>
+          <Legend name="key" position="top"/>
+          <Geom type="line" position="x*value" size={borderWidth} color="key"/>
         </Chart>
         <div
           style={{
             marginRight: -20,
           }}
         >
-          <SliderGen />
+          <SliderGen/>
         </div>
       </div>
     </div>

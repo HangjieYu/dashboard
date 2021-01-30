@@ -12,16 +12,27 @@ const columns = [
   {
     title: (
       <FormattedMessage
-        id="dashboardandanalysis.table.search-keyword"
-        defaultMessage="Search keyword"
+        id="dashboardandrate.rate.host.table.id"
+        defaultMessage="id"
       />
     ),
-    dataIndex: 'host',
-    key: 'host',
-    render: (text) => <a href="/">{text}</a>,
+    dataIndex: 'id',
+    key: 'id',
+    render: (text) => <a>{text}</a>,
   },
   {
-    title: <FormattedMessage id="dashboardandanalysis.table.users" defaultMessage="Users"/>,
+    title: (
+      <FormattedMessage
+        id="dashboardandrate.rate.host.table.name"
+        defaultMessage="name"
+      />
+    ),
+    dataIndex: 'name',
+    key: 'name',
+    render: (text) => <a>{text}</a>,
+  },
+  {
+    title: <FormattedMessage id="dashboardandrate.rate.host.table.count" defaultMessage="count"/>,
     dataIndex: 'count',
     key: 'count',
     sorter: (a, b) => a.count - b.count,
@@ -30,8 +41,8 @@ const columns = [
   {
     title: (
       <FormattedMessage
-        id="dashboardandanalysis.table.weekly-range"
-        defaultMessage="Weekly Range"
+        id="dashboardandrate.rate.host.table.rate"
+        defaultMessage="rate"
       />
     ),
     dataIndex: 'rate',
@@ -64,8 +75,8 @@ const TopSearch =
       bordered={false}
       title={
         <FormattedMessage
-          id="dashboardandanalysis.analysis.online-top-search"
-          defaultMessage="Online Top Search"
+          id="dashboardandrate.rate.host.list-name"
+          defaultMessage="list name"
         />
       }
       extra={dropdownGroup}
@@ -73,7 +84,7 @@ const TopSearch =
         height: '100%',
       }}
     >
-      <Row gutter={68} type="flex" >
+      <Row gutter={68} type="flex">
         <Col
           sm={12}
           xs={24}
@@ -85,14 +96,14 @@ const TopSearch =
             subTitle={
               <span>
               <FormattedMessage
-                id="dashboardandanalysis.analysis.search-users"
-                defaultMessage="search users"
+                id="dashboardandrate.rate.host.list-rate"
+                defaultMessage="rate"
               />
               <Tooltip
                 title={
                   <FormattedMessage
-                    id="dashboardandanalysis.analysis.introduce"
-                    defaultMessage="introduce"
+                    id="dashboardandrate.rate.host.list-count"
+                    defaultMessage="count"
                   />
                 }
               >
@@ -122,14 +133,14 @@ const TopSearch =
             subTitle={
               <span>
               <FormattedMessage
-                id="dashboardandanalysis.analysis.per-capita-search"
-                defaultMessage="Per Capita Search"
+                id="dashboardandrate.rate.host.list-rate"
+                defaultMessage="rate"
               />
               <Tooltip
                 title={
                   <FormattedMessage
-                    id="dashboardandanalysis.analysis.introduce"
-                    defaultMessage="introduce"
+                    id="dashboardandrate.rate.host.list-count"
+                    defaultMessage="count"
                   />
                 }
               >
@@ -158,17 +169,21 @@ const TopSearch =
           style: {
             marginBottom: 0,
           },
-          pageSize: 5,
+          pageSize: 10,
         }}
         onRow={record => {
           return {
             onClick: event => {
               selectHostTabKey(record)
             }, // 点击行
-            onDoubleClick: event => {},
-            onContextMenu: event => {},
-            onMouseEnter: event => {}, // 鼠标移入行
-            onMouseLeave: event => {},
+            onDoubleClick: event => {
+            },
+            onContextMenu: event => {
+            },
+            onMouseEnter: event => {
+            }, // 鼠标移入行
+            onMouseLeave: event => {
+            },
           };
         }}
       />

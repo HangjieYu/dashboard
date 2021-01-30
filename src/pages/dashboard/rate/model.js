@@ -4,6 +4,7 @@ const initState = {
   hostData: [],
   visitData2: [],
   searchData: [],
+  searchData2: [],
   offlineData: [],
   offlineChartData: [],
 };

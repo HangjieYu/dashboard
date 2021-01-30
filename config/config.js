@@ -78,7 +78,7 @@ export default defineConfig({
               icon: 'dashboard',
               routes: [
                 {
-                  path: '/',
+                  path: '/dashboard',
                   redirect: '/dashboard/rate',
                 },
                 {
@@ -352,6 +352,6 @@ export default defineConfig({
     basePath: '/',
   },
   esbuild: {},
-  base: '/workflow/',
+  base: '/workflow/admin/',
   publicPath: '/workflow/',
 });
