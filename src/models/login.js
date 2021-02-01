@@ -38,7 +38,7 @@ const Model = {
           }
         }
 
-        history.replace(redirect || '/');
+        history.replace(redirect || '/dashboard');
       }
     },
 
