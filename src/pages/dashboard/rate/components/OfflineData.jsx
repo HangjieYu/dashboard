@@ -19,8 +19,8 @@ const CustomTab = ({ data, currentTabKey: currentKey }) => (
         title={data.name}
         subTitle={
           <FormattedMessage
-            id="dashboardandanalysis.analysis.conversion-rate"
-            defaultMessage="Conversion Rate"
+            id="dashboardandrate.rate.rate"
+            defaultMessage="Rate"
           />
         }
         gap={2}

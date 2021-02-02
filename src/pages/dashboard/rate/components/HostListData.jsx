@@ -3,9 +3,7 @@ import {Card, Col, Row, Table, Tooltip} from 'antd';
 import {FormattedMessage} from 'umi';
 import React from 'react';
 import numeral from 'numeral';
-import {MiniArea} from './Charts';
 import NumberInfo from './NumberInfo';
-import Trend from './Trend';
 import styles from '../style.less';
 
 const columns = [
@@ -32,10 +30,15 @@ const columns = [
     render: (text) => <a>{text}</a>,
   },
   {
-    title: <FormattedMessage id="dashboardandrate.rate.host.table.count" defaultMessage="count"/>,
-    dataIndex: 'count',
-    key: 'count',
-    sorter: (a, b) => a.count - b.count,
+    title: <FormattedMessage id="dashboardandrate.rate.host.table.producer" defaultMessage="producer"/>,
+    dataIndex: 'producer',
+    key: 'producer',
+    className: styles.alignRight,
+  },
+  {
+    title: <FormattedMessage id="dashboardandrate.rate.host.table.consumer" defaultMessage="consumer"/>,
+    dataIndex: 'consumer',
+    key: 'consumer',
     className: styles.alignRight,
   },
   {
@@ -47,25 +50,13 @@ const columns = [
     ),
     dataIndex: 'rate',
     key: 'rate',
-    sorter: (a, b) => a.range - b.range,
-    render: (text, record) => (
-      <Trend flag={record.status === 1 ? 'down' : 'up'}>
-        <span
-          style={{
-            marginRight: 4,
-          }}
-        >
-          {text}%
-        </span>
-      </Trend>
-    ),
   },
 ];
 
 const TopSearch =
   ({
      loading,
-     visitData2,
+     hostTotalData,
      searchData,
      dropdownGroup,
      selectHostTabKey,
@@ -86,8 +77,8 @@ const TopSearch =
     >
       <Row gutter={68} type="flex">
         <Col
-          sm={12}
-          xs={24}
+          sm={48}
+          xs={48}
           style={{
             marginBottom: 24,
           }}
@@ -96,14 +87,14 @@ const TopSearch =
             subTitle={
               <span>
               <FormattedMessage
-                id="dashboardandrate.rate.host.list-rate"
-                defaultMessage="rate"
+                id="dashboardandrate.rate.host.list-total"
+                defaultMessage="total"
               />
               <Tooltip
                 title={
                   <FormattedMessage
-                    id="dashboardandrate.rate.host.list-count"
-                    defaultMessage="count"
+                    id="dashboardandrate.rate.host.list-rate"
+                    defaultMessage="rate"
                   />
                 }
               >
@@ -116,48 +107,10 @@ const TopSearch =
             </span>
             }
             gap={8}
-            total={numeral(12321).format('0,0')}
-            status="up"
-            subTotal={17.1}
+            total={numeral(hostTotalData.producer).format('0,0')}
+            status={hostTotalData.rate > 5 ? 'up' : 'down'}
+            subTotal={hostTotalData.rate}
           />
-          <MiniArea line height={45} data={visitData2}/>
-        </Col>
-        <Col
-          sm={12}
-          xs={24}
-          style={{
-            marginBottom: 24,
-          }}
-        >
-          <NumberInfo
-            subTitle={
-              <span>
-              <FormattedMessage
-                id="dashboardandrate.rate.host.list-rate"
-                defaultMessage="rate"
-              />
-              <Tooltip
-                title={
-                  <FormattedMessage
-                    id="dashboardandrate.rate.host.list-count"
-                    defaultMessage="count"
-                  />
-                }
-              >
-                <InfoCircleOutlined
-                  style={{
-                    marginLeft: 8,
-                  }}
-                />
-              </Tooltip>
-            </span>
-            }
-            total={2.7}
-            status="down"
-            subTotal={26.2}
-            gap={8}
-          />
-          <MiniArea line height={45} data={visitData2}/>
         </Col>
       </Row>
       <Table

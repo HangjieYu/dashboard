@@ -3,7 +3,6 @@ import Bar from './Bar';
 import ChartCard from './ChartCard';
 import Field from './Field';
 import Gauge from './Gauge';
-import MiniArea from './MiniArea';
 import MiniBar from './MiniBar';
 import MiniProgress from './MiniProgress';
 import Pie from './Pie';
@@ -19,7 +18,6 @@ const Charts = {
   Pie,
   Gauge,
   MiniBar,
-  MiniArea,
   MiniProgress,
   ChartCard,
   Field,
@@ -34,7 +32,6 @@ export {
   Pie,
   Gauge,
   MiniBar,
-  MiniArea,
   MiniProgress,
   ChartCard,
   Field,

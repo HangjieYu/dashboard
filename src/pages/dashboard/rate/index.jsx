@@ -85,7 +85,7 @@ class Rate extends Component {
     const {dashboardRate, loading} = this.props;
     const {
       hostData,
-      visitData2,
+      hostTotalData,
       searchData,
       searchData2,
       offlineData,
@@ -124,8 +124,8 @@ class Rate extends Component {
               <Suspense fallback={null}>
                 <HostListData
                   loading={loading}
-                  visitData2={visitData2}
                   searchData={searchData}
+                  hostTotalData={hostTotalData}
                   dropdownGroup={dropdownGroup}
                   selectHostTabKey={this.selectHostTabKey}
                 />
@@ -135,7 +135,6 @@ class Rate extends Component {
               <Suspense fallback={null}>
                 <CompanyListData
                   loading={loading}
-                  visitData2={visitData2}
                   searchData={searchData2}
                   dropdownGroup={dropdownGroup}
                   selectHostTabKey={this.selectCompanyTabKey}

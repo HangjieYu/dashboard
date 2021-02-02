@@ -2,7 +2,7 @@ import {fakeChartData} from './service';
 
 const initState = {
   hostData: [],
-  visitData2: [],
+  hostTotalData: {},
   searchData: [],
   searchData2: [],
   offlineData: [],
