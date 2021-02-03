@@ -1,21 +1,29 @@
-import { queryBasicProfile } from './service';
+import {queryBasicProfile} from './service';
+
+const initState = {
+  process: {}
+};
+
 const Model = {
   namespace: 'profileAndbasic',
-  state: {
-    basicGoods: [],
-  },
+  state: initState,
   effects: {
-    *fetchBasic(_, { call, put }) {
-      const response = yield call(queryBasicProfile);
+    * fetchBasic({payload}, {call, put}) {
+
+      console.log(payload)
+      const response = yield call(queryBasicProfile, payload);
+
       yield put({
-        type: 'show',
-        payload: response,
+        type: 'save',
+        payload: {
+          process: response,
+        },
       });
     },
   },
   reducers: {
-    show(state, { payload }) {
-      return { ...state, ...payload };
+    save(state, {payload}) {
+      return {...state, ...payload};
     },
   },
 };
