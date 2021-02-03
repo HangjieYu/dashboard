@@ -81,14 +81,14 @@ const TableList = () => {
   const [selectedRowsState, setSelectedRows] = useState([]);
   const columns = [
     {
-      title: '规则名称',
+      title: '流程id',
       dataIndex: 'name',
-      tip: '规则名称是唯一的 key',
+      tip: '流程id是唯一的 key',
       formItemProps: {
         rules: [
           {
             required: true,
-            message: '规则名称为必填项',
+            message: '流程id为必填项',
           },
         ],
       },
@@ -97,59 +97,19 @@ const TableList = () => {
       },
     },
     {
-      title: '描述',
+      title: '流程名称',
       dataIndex: 'desc',
       valueType: 'textarea',
+      hideInForm: true,
+      search: false,
     },
     {
-      title: '服务调用次数',
+      title: '本月执行次数',
       dataIndex: 'callNo',
       sorter: true,
       hideInForm: true,
-      renderText: (val) => `${val} 万`,
-    },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      hideInForm: true,
-      valueEnum: {
-        0: {
-          text: '关闭',
-          status: 'Default',
-        },
-        1: {
-          text: '运行中',
-          status: 'Processing',
-        },
-        2: {
-          text: '已上线',
-          status: 'Success',
-        },
-        3: {
-          text: '异常',
-          status: 'Error',
-        },
-      },
-    },
-    {
-      title: '上次调度时间',
-      dataIndex: 'updatedAt',
-      sorter: true,
-      valueType: 'dateTime',
-      hideInForm: true,
-      renderFormItem: (item, { defaultRender, ...rest }, form) => {
-        const status = form.getFieldValue('status');
-
-        if (`${status}` === '0') {
-          return false;
-        }
-
-        if (`${status}` === '3') {
-          return <Input {...rest} placeholder="请输入异常原因！" />;
-        }
-
-        return defaultRender(item);
-      },
+      search: false,
+      renderText: (val) => `${val}`,
     },
     {
       title: '操作',
@@ -165,8 +125,6 @@ const TableList = () => {
           >
             配置
           </a>
-          <Divider type="vertical" />
-          <a href="">订阅警报</a>
         </>
       ),
     },
@@ -203,10 +161,6 @@ const TableList = () => {
               >
                 {selectedRowsState.length}
               </a>{' '}
-              项&nbsp;&nbsp;
-              <span>
-                服务调用次数总计 {selectedRowsState.reduce((pre, item) => pre + item.callNo, 0)} 万
-              </span>
             </div>
           }
         >
@@ -219,7 +173,6 @@ const TableList = () => {
           >
             批量删除
           </Button>
-          <Button type="primary">批量审批</Button>
         </FooterToolbar>
       )}
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
