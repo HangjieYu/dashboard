@@ -1,4 +1,7 @@
 import request from 'umi-request';
-export async function queryBasicProfile() {
-  return request('/api/profile/basic');
+
+export async function queryBasicProfile(params) {
+  return request('/workflow/api/getProcessById', {
+    params,
+  });
 }

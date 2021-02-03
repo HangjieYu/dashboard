@@ -7,6 +7,9 @@ import ProDescriptions from '@ant-design/pro-descriptions';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
 import { queryRule, updateRule, addRule, removeRule } from './service';
+
+import {Link} from 'umi';
+
 /**
  * 添加节点
  * @param fields
@@ -93,7 +96,12 @@ const TableList = () => {
         ],
       },
       render: (dom, entity) => {
-        return <a onClick={() => setRow(entity)}>{dom}</a>;
+        return <Link to={{
+          pathname: '/profile/basic',
+          query: {
+            id: dom,
+          }
+        }}>{dom}</Link>;
       },
     },
     {
@@ -102,6 +110,9 @@ const TableList = () => {
       valueType: 'textarea',
       hideInForm: true,
       search: false,
+      render: (dom, entity) => {
+        return <a onClick={() => setRow(entity)}>{dom}</a>;
+      },
     },
     {
       title: '本月执行次数',
