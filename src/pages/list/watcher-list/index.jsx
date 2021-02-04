@@ -1,12 +1,12 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, message, Input, Drawer } from 'antd';
-import React, { useState, useRef } from 'react';
-import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
+import {PlusOutlined} from '@ant-design/icons';
+import {Button, Divider, message, Input, Drawer} from 'antd';
+import React, {useState, useRef} from 'react';
+import {PageContainer, FooterToolbar} from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
-import { queryRule, updateRule, addRule, removeRule } from './service';
+import {queryRule, updateRule, addRule, removeRule} from './service';
 
 import {Link} from 'umi';
 
@@ -19,7 +19,7 @@ const handleAdd = async (fields) => {
   const hide = message.loading('正在添加');
 
   try {
-    await addRule({ ...fields });
+    await addRule({...fields});
     hide();
     message.success('添加成功');
     return true;
@@ -85,7 +85,7 @@ const TableList = () => {
   const columns = [
     {
       title: '流程id',
-      dataIndex: 'name',
+      dataIndex: 'processId',
       tip: '流程id是唯一的 key',
       formItemProps: {
         rules: [
@@ -105,55 +105,55 @@ const TableList = () => {
       },
     },
     {
-      title: '流程名称',
-      dataIndex: 'desc',
+      title: '流程名',
+      dataIndex: 'processName',
       valueType: 'textarea',
       hideInForm: true,
       search: false,
-      render: (dom, entity) => {
-        return <a onClick={() => setRow(entity)}>{dom}</a>;
-      },
     },
     {
       title: '网络id',
-      dataIndex: 'callNo',
+      dataIndex: 'companyId',
+      valueType: 'textarea',
+      hideInForm: true,
+      search: false,
+    },
+    {
+      title: '总计',
+      dataIndex: 'count',
+      sorter: true,
       hideInForm: true,
       search: false,
       renderText: (val) => `${val}`,
     },
     {
-      title: '操作',
-      dataIndex: 'option',
-      valueType: 'option',
-      render: (_, record) => (
-        <>
-          <a
-            onClick={() => {
-              handleUpdateModalVisible(true);
-              setStepFormValues(record);
-            }}
-          >
-            配置
-          </a>
-        </>
-      ),
+      title: '平均耗时',
+      dataIndex: 'avg',
+      sorter: true,
+      hideInForm: true,
+      search: false,
+      renderText: (val) => `${val}`,
+    },
+    {
+      title: '最大耗时',
+      dataIndex: 'max',
+      sorter: true,
+      hideInForm: true,
+      search: false,
+      renderText: (val) => `${val}`,
     },
   ];
   return (
     <PageContainer>
       <ProTable
+        toolBarRender={false}
         headerTitle="查询表格"
         actionRef={actionRef}
         rowKey="key"
         search={{
           labelWidth: 120,
         }}
-        toolBarRender={() => [
-          <Button type="primary" onClick={() => handleModalVisible(true)}>
-            <PlusOutlined /> 新建
-          </Button>,
-        ]}
-        request={(params, sorter, filter) => queryRule({ ...params, sorter, filter })}
+        request={(params, sorter, filter) => queryRule({...params, sorter, filter})}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),

@@ -109,7 +109,13 @@ export default defineConfig({
                   icon: 'smile',
                   path: '/list/process-debug',
                   component: './list/process-debug',
-                }
+                },
+                {
+                  name: 'watcher-list',
+                  icon: 'smile',
+                  path: '/list/watcher-list',
+                  component: './list/watcher-list',
+                },
               ],
             },
             {

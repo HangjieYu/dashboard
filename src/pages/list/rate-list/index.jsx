@@ -106,7 +106,6 @@ const TableList = () => {
     {
       title: '本月执行次数',
       dataIndex: 'callNo',
-      sorter: true,
       hideInForm: true,
       search: false,
       renderText: (val) => `${val}`,
