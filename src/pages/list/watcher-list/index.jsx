@@ -116,7 +116,7 @@ const TableList = () => {
       dataIndex: 'companyId',
       valueType: 'textarea',
       hideInForm: true,
-      search: false,
+      search: true,
     },
     {
       title: '总计',

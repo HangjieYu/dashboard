@@ -145,6 +145,7 @@ class Rate extends Component {
         </React.Fragment>
 
         <Drawer
+          loading={loading}
           height={700}
           visible={rateKey}
           onClose={() => {
