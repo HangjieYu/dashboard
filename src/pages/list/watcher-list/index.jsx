@@ -1,12 +1,10 @@
-import {PlusOutlined} from '@ant-design/icons';
 import {Button, Divider, message, Input, Drawer} from 'antd';
 import React, {useState, useRef} from 'react';
 import {PageContainer, FooterToolbar} from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import CreateForm from './components/CreateForm';
-import UpdateForm from './components/UpdateForm';
-import {queryRule, updateRule, addRule, removeRule} from './service';
+import {queryRule, addRule, removeRule} from './service';
 
 import {Link} from 'umi';
 
@@ -29,29 +27,7 @@ const handleAdd = async (fields) => {
     return false;
   }
 };
-/**
- * 更新节点
- * @param fields
- */
 
-const handleUpdate = async (fields) => {
-  const hide = message.loading('正在配置');
-
-  try {
-    await updateRule({
-      name: fields.name,
-      desc: fields.desc,
-      key: fields.key,
-    });
-    hide();
-    message.success('配置成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('配置失败请重试！');
-    return false;
-  }
-};
 /**
  *  删除节点
  * @param selectedRows
@@ -77,8 +53,6 @@ const handleRemove = async (selectedRows) => {
 
 const TableList = () => {
   const [createModalVisible, handleModalVisible] = useState(false);
-  const [updateModalVisible, handleUpdateModalVisible] = useState(false);
-  const [stepFormValues, setStepFormValues] = useState({});
   const actionRef = useRef();
   const [row, setRow] = useState();
   const [selectedRowsState, setSelectedRows] = useState([]);
@@ -95,7 +69,7 @@ const TableList = () => {
           },
         ],
       },
-      render: (dom, entity) => {
+      render: (dom) => {
         return <Link to={{
           pathname: '/profile/basic',
           query: {
@@ -203,29 +177,6 @@ const TableList = () => {
           columns={columns}
         />
       </CreateForm>
-      {stepFormValues && Object.keys(stepFormValues).length ? (
-        <UpdateForm
-          onSubmit={async (value) => {
-            const success = await handleUpdate(value);
-
-            if (success) {
-              handleUpdateModalVisible(false);
-              setStepFormValues({});
-
-              if (actionRef.current) {
-                actionRef.current.reload();
-              }
-            }
-          }}
-          onCancel={() => {
-            handleUpdateModalVisible(false);
-            setStepFormValues({});
-          }}
-          updateModalVisible={updateModalVisible}
-          values={stepFormValues}
-        />
-      ) : null}
-
       <Drawer
         width={600}
         visible={!!row}

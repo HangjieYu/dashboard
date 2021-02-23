@@ -1,4 +1,5 @@
 import request from 'umi-request';
+
 export async function queryRule(params) {
   return request('/workflow/api/getProcessDebugList', {
     params,
@@ -16,9 +17,4 @@ export async function addRule(params) {
     data: { ...params, method: 'post' },
   });
 }
-export async function updateRule(params) {
-  return request('/workflow/api/putProcessDebug', {
-    method: 'POST',
-    data: { ...params, method: 'update' },
-  });
-}
+

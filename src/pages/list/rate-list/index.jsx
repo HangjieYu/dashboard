@@ -1,12 +1,13 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, message, Input, Drawer } from 'antd';
-import React, { useState, useRef } from 'react';
-import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
+import {PlusOutlined} from '@ant-design/icons';
+import {Button, Divider, message, Input, Drawer} from 'antd';
+import React, {useState, useRef} from 'react';
+import {PageContainer, FooterToolbar} from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
-import { queryRule, updateRule, addRule, removeRule } from './service';
+import {queryRule, updateRule, addRule, removeRule, removeUseCount} from './service';
+
 /**
  * 添加节点
  * @param fields
@@ -16,7 +17,7 @@ const handleAdd = async (fields) => {
   const hide = message.loading('正在添加');
 
   try {
-    await addRule({ ...fields });
+    await addRule({...fields});
     hide();
     message.success('添加成功');
     return true;
@@ -26,18 +27,39 @@ const handleAdd = async (fields) => {
     return false;
   }
 };
+
+/**
+ * 重置失效时间
+ * @param fields
+ */
+const handleRemoveUseCount = async (fields) => {
+  const hide = message.loading('正在重置');
+
+  try {
+    await removeUseCount({
+      companyId: fields.companyId,
+    });
+    hide();
+    message.success('成功');
+    return true;
+  } catch (error) {
+    hide();
+    message.error('失败请重试！');
+    return false;
+  }
+};
+
 /**
  * 更新节点
  * @param fields
  */
-
 const handleUpdate = async (fields) => {
   const hide = message.loading('正在配置');
 
   try {
     await updateRule({
-      name: fields.name,
-      desc: fields.desc,
+      companyId: fields.companyId,
+      companyName: fields.companyName,
       key: fields.key,
     });
     hide();
@@ -49,6 +71,7 @@ const handleUpdate = async (fields) => {
     return false;
   }
 };
+
 /**
  *  删除节点
  * @param selectedRows
@@ -82,7 +105,7 @@ const TableList = () => {
   const columns = [
     {
       title: '网络id',
-      dataIndex: 'name',
+      dataIndex: 'companyId',
       tip: '网络id是唯一的 key',
       formItemProps: {
         rules: [
@@ -98,17 +121,26 @@ const TableList = () => {
     },
     {
       title: '网络名称',
-      dataIndex: 'desc',
+      dataIndex: 'companyName',
       valueType: 'textarea',
       hideInForm: true,
       search: false,
     },
     {
       title: '本月执行次数',
-      dataIndex: 'callNo',
+      dataIndex: 'execCount',
       hideInForm: true,
       search: false,
       renderText: (val) => `${val}`,
+    },
+    {
+      title: '失效时间',
+      dataIndex: 'execExpire',
+      hideInForm: true,
+      search: false,
+      render: (dom, entity) => {
+        return <a onClick={() => setRow(entity)}>{dom}</a>;
+      },
     },
     {
       title: '操作',
@@ -139,10 +171,10 @@ const TableList = () => {
         }}
         toolBarRender={() => [
           <Button type="primary" onClick={() => handleModalVisible(true)}>
-            <PlusOutlined /> 新建
+            <PlusOutlined/> 新建
           </Button>,
         ]}
-        request={(params, sorter, filter) => queryRule({ ...params, sorter, filter })}
+        request={(params, sorter, filter) => queryRule({...params, sorter, filter})}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),
@@ -223,18 +255,36 @@ const TableList = () => {
         }}
         closable={false}
       >
-        {row?.name && (
+        {row?.companyId && (
           <ProDescriptions
-            column={2}
-            title={row?.name}
-            request={async () => ({
-              data: row || {},
-            })}
+            column={1}
+            actionRef={actionRef}
+            title="重置失效时间"
             params={{
-              id: row?.name,
+              id: row?.companyId,
             }}
-            columns={columns}
-          />
+            request={async () => {
+              return Promise.resolve({
+                success: true,
+                data: {companyId: row?.companyId, execExpire: row?.execExpire},
+              });
+            }}
+          >
+            <ProDescriptions.Item label="文本" valueType="option">
+              <Button
+                type="primary"
+                onClick={async () => {
+                  await handleRemoveUseCount(row);
+                  actionRef.current?.reload();
+                }}
+                key="rest"
+              >
+                重置
+              </Button>
+            </ProDescriptions.Item>
+            <ProDescriptions.Item label="网络id" dataIndex="companyId"/>
+            <ProDescriptions.Item label="失效时间" dataIndex="execExpire"/>
+          </ProDescriptions>
         )}
       </Drawer>
     </PageContainer>
