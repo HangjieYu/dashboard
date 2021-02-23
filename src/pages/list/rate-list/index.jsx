@@ -266,7 +266,11 @@ const TableList = () => {
             request={async () => {
               return Promise.resolve({
                 success: true,
-                data: {companyId: row?.companyId, execExpire: row?.execExpire},
+                data: {
+                  companyId: row?.companyId,
+                  companyName: row?.companyName,
+                  execExpire: row?.execExpire,
+                },
               });
             }}
           >
@@ -283,6 +287,7 @@ const TableList = () => {
               </Button>
             </ProDescriptions.Item>
             <ProDescriptions.Item label="网络id" dataIndex="companyId"/>
+            <ProDescriptions.Item label="网络名称" dataIndex="companyName"/>
             <ProDescriptions.Item label="失效时间" dataIndex="execExpire"/>
           </ProDescriptions>
         )}
