@@ -125,19 +125,26 @@ export default defineConfig({
               routes: [
                 {
                   path: '/',
-                  redirect: '/profile/basic',
-                },
-                {
-                  name: 'basic',
-                  icon: 'smile',
-                  path: '/profile/basic',
-                  component: './profile/basic',
+                  redirect: '/profile/advanced',
                 },
                 {
                   name: 'basic',
                   icon: 'smile',
                   path: '/profile/basic/:id',
                   component: './profile/basic',
+                  hideInMenu: true
+                },
+                {
+                  name: 'rate-company',
+                  icon: 'smile',
+                  path: '/profile/rate-company',
+                  component: './profile/rate-company',
+                },
+                {
+                  name: 'rate-company',
+                  icon: 'smile',
+                  path: '/profile/rate-company/:id',
+                  component: './profile/rate-company',
                   hideInMenu: true
                 },
                 {
